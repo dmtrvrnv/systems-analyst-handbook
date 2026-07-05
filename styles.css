@@ -1,0 +1,144 @@
+/* ============================================================
+   «Путь в системные аналитики» — единый справочник-конспект
+   Тёплая «бумажная» светлая тема + аккуратная тёмная.
+   ============================================================ */
+
+:root {
+  --bg:        #f6f4ef;
+  --paper:     #fffdf8;
+  --side:      #201d19;
+  --side-ink:  #ece7dd;
+  --side-soft: #a49c8d;
+  --ink:       #24211d;
+  --ink-soft:  #5b554c;
+  --line:      #e4ded2;
+  --accent:    #b1121f;   /* сдержанный «альфа-красный» акцент */
+  --accent-2:  #2f6f8f;   /* спокойный синий для схем */
+  --good:      #2e7d4f;   --good-bg: #e9f6ee;
+  --bad:       #c0392b;   --bad-bg:  #fdecea;
+  --rule:      #8a6d1d;   --rule-bg: #fbf3dd;
+  --note:      #2f6f8f;   --note-bg: #e7f1f6;
+  --chip-bg:   #efeadd;
+  --shadow:    0 1px 2px rgba(0,0,0,.05), 0 8px 30px rgba(0,0,0,.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#16181c; --paper:#1e2126; --side:#101216; --side-ink:#e8e6e1; --side-soft:#8b8578;
+    --ink:#e8e6e1; --ink-soft:#a7a29a; --line:#33373e; --accent:#ff6b74; --accent-2:#79b8d4;
+    --good:#6cc294; --good-bg:#172a20; --bad:#ef8a80; --bad-bg:#2c1c1a;
+    --rule:#e4c66a; --rule-bg:#2a2618; --note:#8fc7e0; --note-bg:#16252c; --chip-bg:#2a2e35;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  font-size: 18px; line-height: 1.65;
+}
+
+/* ---------- Каркас: боковое меню + контент ---------- */
+.layout { display: flex; align-items: flex-start; max-width: 1160px; margin: 0 auto; }
+
+.sidebar {
+  position: sticky; top: 0; align-self: flex-start;
+  width: 264px; flex-shrink: 0; height: 100vh; overflow-y: auto;
+  background: var(--side); color: var(--side-ink);
+  padding: 26px 18px; display: flex; flex-direction: column; gap: 4px;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--side-ink); margin-bottom: 20px; }
+.brand-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); flex-shrink: 0; box-shadow: 0 0 0 4px rgba(177,18,31,.18); }
+.brand-name { font-weight: 800; font-size: 17px; line-height: 1.25; }
+.nav-group { color: var(--side-soft); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin: 16px 0 6px; }
+.sidebar a { display: block; text-decoration: none; color: var(--side-ink); padding: 8px 12px; border-radius: 8px; font-size: 15px; }
+.sidebar a:hover { background: rgba(255,255,255,.07); }
+.sidebar a.active { background: var(--accent); color: #fff; font-weight: 600; }
+.nav-todo { display: block; color: var(--side-soft); padding: 8px 12px; font-size: 15px; }
+.side-foot { margin-top: auto; padding-top: 20px; color: var(--side-soft); font-size: 12px; }
+
+.content { flex: 1; min-width: 0; padding: 48px 24px 96px; }
+.paper {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+  padding: 40px 44px; box-shadow: var(--shadow); max-width: 800px; margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .layout { flex-direction: column; }
+  .sidebar { position: static; width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; padding: 14px 16px; }
+  .brand { margin-bottom: 0; margin-right: 12px; }
+  .nav-group, .side-foot { display: none; }
+  .sidebar a, .nav-todo { padding: 6px 10px; font-size: 14px; }
+  .content { padding: 28px 16px 72px; }
+  .paper { padding: 28px 22px; }
+}
+
+/* ---------- Шапка конспекта ---------- */
+.kicker { display: inline-block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+h1 { font-size: 32px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -.01em; }
+.subtitle { color: var(--ink-soft); font-size: 17px; margin: 0 0 8px; }
+h2 { font-size: 23px; margin: 44px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--line); }
+h3 { font-size: 19px; margin: 28px 0 8px; }
+p { margin: 12px 0; }
+strong { color: var(--ink); }
+a { color: var(--accent); }
+ul, ol { margin: 12px 0; padding-left: 22px; }
+li { margin: 6px 0; }
+.tr { color: var(--ink-soft); font-style: italic; }
+
+/* ---------- Плашки-callout ---------- */
+.box { border-radius: 12px; padding: 16px 18px; margin: 18px 0; border: 1px solid var(--line); font-size: 17px; }
+.box .box-title { font-weight: 700; display: block; margin-bottom: 4px; }
+.box.rule { background: var(--rule-bg); border-color: var(--rule); } .box.rule .box-title { color: var(--rule); }
+.box.good { background: var(--good-bg); border-color: var(--good); } .box.good .box-title { color: var(--good); }
+.box.bad  { background: var(--bad-bg);  border-color: var(--bad);  } .box.bad  .box-title { color: var(--bad); }
+.box.note { background: var(--note-bg); border-color: var(--note); } .box.note .box-title { color: var(--note); }
+
+/* ---------- Таблицы ---------- */
+.table-wrap { overflow-x: auto; margin: 18px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 16px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: var(--chip-bg); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+.yes { color: var(--good); font-weight: 700; }
+.no  { color: var(--bad);  font-weight: 700; }
+
+/* ---------- Чипы ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.chip { background: var(--chip-bg); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+
+/* ---------- Диаграммы ---------- */
+figure { margin: 24px 0; }
+.diagram { background: var(--paper); border: 1px dashed var(--line); border-radius: 12px; padding: 18px; overflow-x: auto; }
+.diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 8px; }
+.svg-box { fill: var(--paper); stroke: var(--accent-2); stroke-width: 2; }
+.svg-box-hl { fill: var(--accent); stroke: var(--accent); stroke-width: 2; }
+.svg-label { fill: var(--ink); font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; }
+.svg-label-hl { fill: #fff; font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; font-weight: 700; }
+.svg-sub { fill: var(--ink-soft); font-family: "Segoe UI", system-ui, sans-serif; font-size: 12px; }
+.svg-arrow { stroke: var(--ink-soft); stroke-width: 2; fill: none; }
+.svg-arrow-head { fill: var(--ink-soft); }
+.svg-dashed { stroke: var(--accent-2); stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+
+/* ---------- Навигация низа ---------- */
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--line); font-size: 15px; }
+.nav a { text-decoration: none; color: var(--accent-2); font-weight: 600; }
+
+/* ---------- Главная: карточки модулей ---------- */
+.hero { background: linear-gradient(135deg, var(--accent), #7d0d16); color: #fff; border-radius: 16px; padding: 34px 36px; margin-bottom: 8px; }
+.hero .kicker { color: rgba(255,255,255,.85); }
+.hero h1 { color: #fff; }
+.hero .subtitle { color: rgba(255,255,255,.9); }
+.progress-line { height: 8px; background: rgba(255,255,255,.25); border-radius: 999px; overflow: hidden; margin-top: 18px; }
+.progress-line > span { display: block; height: 100%; background: #fff; }
+.toc-item { display: block; text-decoration: none; color: inherit; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 12px 0; transition: transform .1s ease, box-shadow .1s ease; }
+a.toc-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.toc-num { color: var(--accent); font-weight: 800; font-size: 15px; }
+.toc-title { font-size: 20px; font-weight: 700; margin: 2px 0 4px; }
+.toc-desc { color: var(--ink-soft); font-size: 15px; }
+.toc-item.todo { opacity: .6; }
+.status { font-size: 13px; padding: 2px 10px; border-radius: 999px; background: var(--chip-bg); }
+.status.done { color: var(--good); }

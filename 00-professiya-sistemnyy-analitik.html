@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 0 — Кто такой системный аналитик</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html" class="active">0 · Профессия</a>
+    <a href="01-trebovaniya.html">1 · Требования</a>
+    <span class="nav-todo">1+ · Критерии приёмки</span>
+    <span class="nav-todo">2 · BPMN и UML</span>
+    <span class="nav-todo">3 · SQL и базы данных</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 0 · Основы профессии</span>
+  <h1>Кто такой системный аналитик</h1>
+  <p class="subtitle">Переводчик между «чего хочет бизнес» и «что должны написать разработчики».</p>
+
+  <h2>Определение одной фразой</h2>
+  <p>
+    <strong>Системный аналитик</strong> (сокращённо <strong>СА</strong>) превращает размытое
+    желание бизнеса в точную техническую постановку: какие данные откуда берём, по какой
+    формуле считаем, что показываем на экране, что делаем при ошибке.
+  </p>
+  <p>
+    Пример: бизнес говорит «хочу, чтобы клиент видел реальную доходность вклада». СА
+    превращает это в: <em>«взять сумму и ставку из формы, инфляцию — из данных Центробанка,
+    посчитать по формуле Фишера, вывести реальную сумму и разницу с номиналом»</em>.
+  </p>
+
+  <h2>Место в цепочке команды</h2>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Цепочка: Бизнес, Бизнес-аналитик, Системный аналитик, Разработчик, Тестировщик">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <!-- boxes -->
+        <g>
+          <rect class="svg-box" x="8"   y="45" width="118" height="52" rx="9"/>
+          <text class="svg-label" x="67"  y="70" text-anchor="middle">Бизнес</text>
+          <text class="svg-sub"   x="67"  y="87" text-anchor="middle">чего хочу</text>
+
+          <rect class="svg-box" x="150" y="45" width="118" height="52" rx="9"/>
+          <text class="svg-label" x="209" y="70" text-anchor="middle">Бизнес-</text>
+          <text class="svg-label" x="209" y="87" text-anchor="middle">аналитик</text>
+
+          <rect class="svg-box-hl" x="292" y="38" width="130" height="66" rx="9"/>
+          <text class="svg-label-hl" x="357" y="64" text-anchor="middle">Системный</text>
+          <text class="svg-label-hl" x="357" y="82" text-anchor="middle">аналитик</text>
+
+          <rect class="svg-box" x="446" y="45" width="118" height="52" rx="9"/>
+          <text class="svg-label" x="505" y="76" text-anchor="middle">Разработчик</text>
+
+          <rect class="svg-box" x="588" y="45" width="124" height="52" rx="9"/>
+          <text class="svg-label" x="650" y="76" text-anchor="middle">Тестировщик</text>
+        </g>
+        <!-- arrows -->
+        <g>
+          <line class="svg-arrow" x1="126" y1="71" x2="148" y2="71" marker-end="url(#ah)"/>
+          <line class="svg-arrow" x1="268" y1="71" x2="290" y2="71" marker-end="url(#ah)"/>
+          <line class="svg-arrow" x1="422" y1="71" x2="444" y2="71" marker-end="url(#ah)"/>
+          <line class="svg-arrow" x1="564" y1="71" x2="586" y2="71" marker-end="url(#ah)"/>
+        </g>
+        <!-- labels under -->
+        <text class="svg-sub" x="209" y="128" text-anchor="middle">ЗАЧЕМ и ЧТО</text>
+        <text class="svg-sub" x="357" y="128" text-anchor="middle">КАК технически</text>
+      </svg>
+    </div>
+    <figcaption>Требование движется слева направо, становясь всё конкретнее.</figcaption>
+  </figure>
+
+  <div class="box note">
+    <span class="box-title">📌 Важно для России</span>
+    Часто бизнес-аналитика и системного аналитика совмещают в одной роли (пишут
+    «аналитик» или «системный/бизнес-аналитик»). Поэтому вакансии обеих ролей тебе подходят.
+  </div>
+
+  <h2>Чем реально занят день СА</h2>
+  <ul>
+    <li>разговаривает с заказчиком, вытаскивает и уточняет <strong>требования</strong>;</li>
+    <li>рисует схему процесса (нотация <strong>BPMN</strong> <span class="tr">— Business Process Model and Notation, язык рисования бизнес-процессов</span>);</li>
+    <li>описывает сценарии работы (нотация <strong>UML</strong> <span class="tr">— Unified Modeling Language, язык моделирования систем</span>);</li>
+    <li>описывает, как система общается с другими — контракты <strong>API</strong> <span class="tr">— Application Programming Interface, интерфейс общения программ</span>;</li>
+    <li>лезет в базу данных, пишет запросы на <strong>SQL</strong> <span class="tr">— Structured Query Language, язык запросов к базе</span>;</li>
+    <li>пишет <strong>ТЗ</strong> <span class="tr">— техническое задание</span> разработчику и критерии приёмки;</li>
+    <li>защищает решение, отвечает на вопросы команды.</li>
+  </ul>
+
+  <h2>Чем СА отличается от соседних ролей</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Роль</th><th>Главный вопрос</th><th>Основной инструмент</th></tr>
+    <tr><td><strong>Системный аналитик</strong></td><td>Как построить/изменить систему?</td><td>требования, схемы, API, ТЗ</td></tr>
+    <tr><td>Бизнес-аналитик</td><td>Зачем и что нужно бизнесу?</td><td>процессы, интервью, документы</td></tr>
+    <tr><td>Дата-аналитик</td><td>Что произошло и почему?</td><td>SQL, дашборды, статистика</td></tr>
+    <tr><td>Продуктовый аналитик</td><td>Как продукт влияет на метрики?</td><td>воронки, A/B-тесты, метрики</td></tr>
+  </table>
+  </div>
+
+  <div class="box good">
+    <span class="box-title">💪 Твои сильные стороны (уже есть)</span>
+    <strong>Читаешь и пишешь код</strong> → понимаешь разработчиков, они тебя уважают.
+    <strong>Знаешь банковские продукты изнутри</strong> → половина доменных знаний уже в кармане.
+    <strong>Умеешь упаковывать сложное в понятное</strong> (презентация Альфы) → это половина работы СА.
+  </div>
+
+  <h2>Ключевые термины</h2>
+  <div class="chips">
+    <span class="chip">СА — системный аналитик</span>
+    <span class="chip">Требование — что система должна делать</span>
+    <span class="chip">ТЗ — техническое задание</span>
+    <span class="chip">Актор — тот, кто пользуется системой</span>
+    <span class="chip">Стейкхолдер — кому важен результат</span>
+    <span class="chip">Домен — предметная область (напр. банк)</span>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">← Оглавление</a>
+    <a href="01-trebovaniya.html">Конспект 1: Требования →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+</body>
+</html>

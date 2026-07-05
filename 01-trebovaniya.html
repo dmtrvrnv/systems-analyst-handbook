@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 1 — Требования</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html">0 · Профессия</a>
+    <a href="01-trebovaniya.html" class="active">1 · Требования</a>
+    <span class="nav-todo">1+ · Критерии приёмки</span>
+    <span class="nav-todo">2 · BPMN и UML</span>
+    <span class="nav-todo">3 · SQL и базы данных</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 1 · Требования</span>
+  <h1>Требования: сердце работы аналитика</h1>
+  <p class="subtitle">Как превратить «хочу вот такое» в то, что можно построить и проверить.</p>
+
+  <h2>Что такое требование</h2>
+  <p>
+    <strong>Требование</strong> — это описание того, что система <em>должна делать</em> или
+    <em>какой должна быть</em>. Пишется в форме «Система должна…». Из требований потом рождается
+    всё остальное: схемы, ТЗ <span class="tr">— техническое задание</span>, код и тесты.
+  </p>
+
+  <h2>Урок 1. Актор ≠ стейкхолдер</h2>
+  <p>Аналитик всегда разделяет тех, кто <em>жмёт кнопки</em>, и тех, кому <em>важен результат</em>.</p>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 660 200" role="img" aria-label="Актор пользуется системой, стейкхолдеры получают выгоду">
+        <defs>
+          <marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <!-- actor -->
+        <circle class="svg-box" cx="70" cy="60" r="16"/>
+        <line class="svg-box" x1="70" y1="76" x2="70" y2="112"/>
+        <line class="svg-box" x1="46" y1="90" x2="94" y2="90"/>
+        <line class="svg-box" x1="70" y1="112" x2="52" y2="140"/>
+        <line class="svg-box" x1="70" y1="112" x2="88" y2="140"/>
+        <text class="svg-label" x="70" y="162" text-anchor="middle">Менеджер</text>
+        <text class="svg-sub"   x="70" y="180" text-anchor="middle">актор — пользуется</text>
+
+        <!-- system -->
+        <rect class="svg-box-hl" x="250" y="70" width="160" height="70" rx="10"/>
+        <text class="svg-label-hl" x="330" y="100" text-anchor="middle">Калькулятор</text>
+        <text class="svg-label-hl" x="330" y="120" text-anchor="middle">доходности</text>
+
+        <!-- arrow actor -> system -->
+        <line class="svg-arrow" x1="150" y1="105" x2="248" y2="105" marker-end="url(#ah2)"/>
+        <text class="svg-sub" x="199" y="96" text-anchor="middle">пользуется</text>
+
+        <!-- stakeholders -->
+        <rect class="svg-box" x="520" y="40" width="128" height="48" rx="9"/>
+        <text class="svg-label" x="584" y="70" text-anchor="middle">Банк</text>
+        <rect class="svg-box" x="520" y="120" width="128" height="48" rx="9"/>
+        <text class="svg-label" x="584" y="150" text-anchor="middle">Клиент</text>
+
+        <!-- arrows system -> stakeholders -->
+        <path class="svg-dashed" d="M410,95 C460,80 470,64 518,64" marker-end="url(#ah2)"/>
+        <path class="svg-dashed" d="M410,115 C460,130 470,144 518,144" marker-end="url(#ah2)"/>
+        <text class="svg-sub" x="470" y="185" text-anchor="middle">стейкхолдеры — получают выгоду</text>
+      </svg>
+    </div>
+    <figcaption>Систему проектируют под актора, а обосновывают через выгоду стейкхолдеров.</figcaption>
+  </figure>
+
+  <ul>
+    <li><strong>Актор</strong> <span class="tr">— actor, «действующее лицо»</span> — тот, кто руками работает с системой. Здесь: <strong>менеджер</strong>.</li>
+    <li><strong>Стейкхолдеры</strong> <span class="tr">— stakeholders, «держатели интереса»</span> — кому важен результат, но кнопки не жмут. Здесь: <strong>банк</strong> (продать маржинальные продукты) и <strong>клиент</strong> (не потерять на инфляции).</li>
+  </ul>
+
+  <h2>Урок 2. Требование должно быть проверяемым</h2>
+  <div class="box rule">
+    <span class="box-title">💡 Правило проверяемости</span>
+    Хорошее требование — то, про которое можно однозначно сказать «выполнено / не выполнено»,
+    ткнув в готовую систему. Если проверить нельзя — это не требование, а пожелание или бизнес-цель.
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>Формулировка</th><th>Проверяемо?</th><th>Почему</th></tr>
+    <tr><td>Показывать реальную доходность вклада</td><td class="yes">✅ да</td><td>видно на экране — либо есть, либо нет</td></tr>
+    <tr><td>Помочь менеджеру продать инвестиции</td><td class="no">✕ нет</td><td>это <strong>бизнес-цель</strong>, не требование — не ткнёшь и не проверишь</td></tr>
+    <tr><td>Посчитать прибыль по инвестпродукту</td><td class="yes">✅ да</td><td>ввёл данные → получил число</td></tr>
+    <tr><td><s>Правильно</s> сравнить вклад и инвестиции</td><td class="no">⚠ почти</td><td>слово «правильно» неизмеримо — убрать</td></tr>
+  </table>
+  </div>
+
+  <div class="box bad">
+    <span class="box-title">🚫 Запрещённые слова в требованиях</span>
+    <strong>правильно, удобно, быстро, качественно, гибко</strong> — без цифр это красная тряпка.
+    Либо выкидываем, либо превращаем в измеримое: «быстро» → «ответ за ≤ 2 секунды».
+  </div>
+
+  <p>Бизнес-цель не выбрасываем, а <strong>переводим в проверяемое требование</strong>:</p>
+  <div class="box good">
+    <span class="box-title">✅ Было → стало</span>
+    «Помочь продать инвестиции» → <em>«Система должна на одном экране показывать сравнение
+    доходности вклада и инвестпродукта за тот же срок».</em> Вот это уже можно построить и протестировать.
+  </div>
+
+  <h2>Урок 3. Функциональные vs нефункциональные</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Тип</th><th>Отвечает на вопрос</th><th>Пример</th></tr>
+    <tr><td><strong>Функциональные</strong><br><span class="tr">functional</span></td><td>что система <em>делает</em>?</td><td>считает, показывает, сравнивает</td></tr>
+    <tr><td><strong>Нефункциональные</strong><br><span class="tr">non-functional</span></td><td><em>какой</em> она должна быть?</td><td>скорость, надёжность, безопасность, язык интерфейса</td></tr>
+  </table>
+  </div>
+  <p>
+    Пример нефункционального требования к калькулятору: <em>«пересчёт мгновенный при изменении
+    любого поля»</em> и <em>«на экране дисклеймер, что это не индивидуальная рекомендация»</em>.
+    Второе ты в реальном калькуляторе уже сделал — просто не знал термина.
+  </p>
+
+  <h2>Данные: контракт «вход → система → выход»</h2>
+  <p>Любую систему полезно представить как «чёрный ящик»: что в неё входит и что выходит.</p>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 660 210" role="img" aria-label="Входные данные, система, выходные данные">
+        <defs>
+          <marker id="ah3" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <!-- inputs -->
+        <text class="svg-sub" x="80" y="24" text-anchor="middle">ВХОД</text>
+        <rect class="svg-box" x="14" y="40"  width="132" height="34" rx="7"/>
+        <text class="svg-label" x="80" y="62" text-anchor="middle">Сумма</text>
+        <rect class="svg-box" x="14" y="86"  width="132" height="34" rx="7"/>
+        <text class="svg-label" x="80" y="108" text-anchor="middle">Ставка, %</text>
+        <rect class="svg-box" x="14" y="132" width="132" height="34" rx="7"/>
+        <text class="svg-label" x="80" y="154" text-anchor="middle">Инфляция, %</text>
+
+        <!-- system -->
+        <rect class="svg-box-hl" x="264" y="70" width="140" height="66" rx="10"/>
+        <text class="svg-label-hl" x="334" y="100" text-anchor="middle">Расчёт по</text>
+        <text class="svg-label-hl" x="334" y="120" text-anchor="middle">формуле Фишера</text>
+
+        <!-- outputs -->
+        <text class="svg-sub" x="574" y="24" text-anchor="middle">ВЫХОД</text>
+        <rect class="svg-box" x="510" y="60"  width="132" height="34" rx="7"/>
+        <text class="svg-label" x="576" y="82" text-anchor="middle">Реальная сумма</text>
+        <rect class="svg-box" x="510" y="112" width="132" height="34" rx="7"/>
+        <text class="svg-label" x="576" y="134" text-anchor="middle">Разница с вкладом</text>
+
+        <!-- arrows in -->
+        <line class="svg-arrow" x1="146" y1="57"  x2="262" y2="92"  marker-end="url(#ah3)"/>
+        <line class="svg-arrow" x1="146" y1="103" x2="262" y2="103" marker-end="url(#ah3)"/>
+        <line class="svg-arrow" x1="146" y1="149" x2="262" y2="114" marker-end="url(#ah3)"/>
+        <!-- arrows out -->
+        <line class="svg-arrow" x1="404" y1="95"  x2="508" y2="77"  marker-end="url(#ah3)"/>
+        <line class="svg-arrow" x1="404" y1="111" x2="508" y2="129" marker-end="url(#ah3)"/>
+      </svg>
+    </div>
+    <figcaption>Описав вход и выход, ты уже наполовину описал систему.</figcaption>
+  </figure>
+
+  <div class="box note">
+    <span class="box-title">🔑 Рефлекс аналитика: «откуда данные?»</span>
+    Для каждого входа спроси, <strong>откуда он берётся</strong>. Инфляцию менеджер вводит руками
+    или система тянет из данных Центробанка? От ответа зависит, нужна ли <strong>интеграция</strong>
+    (то самое API). Это и есть переход от «что» к «как» — за него СА и платят.
+  </div>
+
+  <h2>Эталон: как звучит готовое описание</h2>
+  <p><strong>Актор:</strong> менеджер банка.<br>
+     <strong>Стейкхолдеры:</strong> банк (рост продаж), клиент (сохранность средств).<br>
+     <strong>Проблема:</strong> клиент видит номинальную ставку и не замечает, что инфляция съедает доходность; менеджеру нечем это наглядно показать.</p>
+
+  <p><strong>Функциональные требования:</strong></p>
+  <ol>
+    <li>Система должна рассчитывать реальную доходность вклада с учётом инфляции.</li>
+    <li>Система должна рассчитывать доходность инвестпродукта за тот же срок.</li>
+    <li>Система должна показывать сравнение вклада и инвестпродукта на одном экране.</li>
+  </ol>
+  <p><strong>Нефункциональные требования:</strong></p>
+  <ol start="4">
+    <li>Пересчёт мгновенный при изменении любого поля.</li>
+    <li>На экране — дисклеймер о том, что это не индивидуальная рекомендация.</li>
+  </ol>
+
+  <h2>Ключевые термины</h2>
+  <div class="chips">
+    <span class="chip">Требование — «Система должна…»</span>
+    <span class="chip">Актор — кто пользуется</span>
+    <span class="chip">Стейкхолдер — кому важен результат</span>
+    <span class="chip">Функциональное — что делает</span>
+    <span class="chip">Нефункциональное — какой должна быть</span>
+    <span class="chip">Проверяемость — можно ли ткнуть и проверить</span>
+    <span class="chip">Интеграция — обмен данными между системами</span>
+  </div>
+
+  <div class="nav">
+    <a href="00-professiya-sistemnyy-analitik.html">← Конспект 0: Профессия</a>
+    <a href="index.html">Оглавление →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+</body>
+</html>
