@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 4 — SQL: основы</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#128202;</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html">0 · Профессия</a>
+    <a href="01-trebovaniya.html">1 · Требования</a>
+    <a href="02-kriterii-priemki.html">2 · Критерии приёмки</a>
+    <a href="03-bpmn-uml.html">3 · BPMN и UML</a>
+    <a href="04-sql-osnovy.html" class="active">4 · SQL: основы</a>
+    <span class="nav-todo">5 · Агрегаты (SUM, GROUP BY)</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 4 · SQL</span>
+  <h1>SQL: достать данные из базы</h1>
+  <p class="subtitle">Навык №1 в любой вакансии аналитика. Язык, которым «спрашивают» базу данных.</p>
+
+  <div class="box rule">
+    <span class="box-title">⚡ Шпаргалка для заучивания</span>
+    Любой запрос собирается из этих кубиков, всегда в таком порядке:
+<pre class="scenario" style="border-left-color:var(--rule)">
+<b>SELECT</b>   столбцы    — <span style="color:var(--ink-soft)">ЧТО достать (или * — всё)</span>
+<b>FROM</b>     таблица    — <span style="color:var(--ink-soft)">ОТКУДА</span>
+<b>JOIN</b>     таблица2 ON условие  — <span style="color:var(--ink-soft)">склеить со второй таблицей</span>
+<b>WHERE</b>    условие    — <span style="color:var(--ink-soft)">КАКИЕ строки (фильтр)</span>
+<b>ORDER BY</b> столбец    — <span style="color:var(--ink-soft)">КАК отсортировать</span>
+</pre>
+    Обязательны только <b>SELECT</b> и <b>FROM</b>. Остальное — по надобности. Регистр не важен: <code>SELECT</code> = <code>select</code>.
+  </div>
+
+  <h2>Учебная база</h2>
+  <p>Две таблицы. Столбец <code>client_id</code> во вкладах указывает на <code>id</code> клиента — это связь между ними.</p>
+
+  <figure>
+    <div class="diagram">
+<pre class="mermaid">
+erDiagram
+  clients ||--o{ deposits : "имеет вклады"
+  clients {
+    int id
+    text name "имя"
+    text city "город"
+    int age "возраст"
+  }
+  deposits {
+    int id
+    int client_id "чей вклад"
+    text product "продукт"
+    int amount "сумма"
+    real rate "ставка %"
+    int months "срок"
+  }
+</pre>
+    </div>
+    <figcaption>Один клиент — много вкладов. Значок «многие» (o{) со стороны deposits.</figcaption>
+  </figure>
+
+  <h2>SELECT … FROM — что и откуда</h2>
+  <pre class="scenario">SELECT name, city FROM clients</pre>
+  <p>Достать столбцы <code>name</code> и <code>city</code> из таблицы <code>clients</code>. Звёздочка <code>*</code> — все столбцы сразу.</p>
+
+  <h2>WHERE — фильтр строк</h2>
+  <pre class="scenario">SELECT * FROM clients WHERE age &gt; 30</pre>
+  <p>Оставит только строки, где условие истинно. Операторы сравнения:</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Оператор</th><th>Значение</th><th>Пример</th></tr>
+    <tr><td><code>=</code></td><td>равно</td><td><code>city = 'Москва'</code></td></tr>
+    <tr><td><code>&gt;</code> <code>&lt;</code></td><td>больше / меньше (строго)</td><td><code>age &gt; 30</code></td></tr>
+    <tr><td><code>&gt;=</code> <code>&lt;=</code></td><td>больше/меньше или равно</td><td><code>rate &gt;= 12</code></td></tr>
+    <tr><td><code>!=</code></td><td>не равно</td><td><code>product != 'Вклад'</code></td></tr>
+  </table>
+  </div>
+  <div class="box bad">
+    <span class="box-title">🚫 Ловушка: строго или нет</span>
+    <code>rate &gt; 12</code> НЕ включает ровно 12. Чтобы «12 и выше» — нужно <code>rate &gt;= 12</code>. Одна чёрточка меняет ответ.
+    Текст в условии — всегда в одинарных кавычках: <code>'Москва'</code>.
+  </div>
+
+  <h2>ORDER BY — сортировка</h2>
+  <pre class="scenario">SELECT * FROM deposits WHERE rate &gt; 12 ORDER BY amount DESC</pre>
+  <p><code>DESC</code> — по убыванию (от большего к меньшему), <code>ASC</code> — по возрастанию (по умолчанию, можно не писать).</p>
+
+  <h2>JOIN — склеить две таблицы</h2>
+  <p>Во вкладах есть только <code>client_id</code> (номер), а имя лежит в <code>clients</code>. <code>JOIN</code> подтягивает имя к каждому вкладу.</p>
+  <pre class="scenario">SELECT clients.name, deposits.product, deposits.amount
+FROM deposits
+JOIN clients ON deposits.client_id = clients.id</pre>
+  <ul>
+    <li><code>JOIN clients</code> — присоединить вторую таблицу;</li>
+    <li><code>ON deposits.client_id = clients.id</code> — мостик: где номер клиента во вкладе = id клиента;</li>
+    <li><code>таблица.столбец</code> — уточняем, из какой таблицы столбец.</li>
+  </ul>
+  <div class="box note">
+    <span class="box-title">📌 Почему строк ровно столько</span>
+    <code>JOIN</code> даёт одну строку на каждую <strong>совпавшую пару</strong>. 12 вкладов → 12 строк.
+    У кого 2 вклада — попадёт дважды. У кого вкладов нет — <strong>выпадет совсем</strong>.
+  </div>
+
+  <h2>LEFT JOIN и NULL — сохранить всех</h2>
+  <p>Обычный <code>JOIN</code> выкидывает строки без пары. <code>LEFT JOIN</code> оставляет все строки из <strong>левой</strong> таблицы (той, что до <code>LEFT JOIN</code>), а пустые места заполняет <code>NULL</code>.</p>
+  <pre class="scenario">SELECT clients.name, deposits.product, deposits.amount
+FROM clients
+LEFT JOIN deposits ON clients.id = deposits.client_id</pre>
+  <p>Вернёт всех 8 клиентов. У кого нет вклада — в <code>product</code> и <code>amount</code> будет <code>NULL</code>.</p>
+  <div class="box rule">
+    <span class="box-title">💡 NULL — это «пусто», не ноль</span>
+    <code>NULL</code> значит «значения нет». Проверять через <code>=</code> нельзя: <code>WHERE amount = NULL</code> не сработает.
+    Только <code>IS NULL</code> (пусто) и <code>IS NOT NULL</code> (не пусто).
+  </div>
+  <p>Практическая задача — «кто не купил ни одного продукта»:</p>
+  <pre class="scenario">SELECT clients.name
+FROM clients
+LEFT JOIN deposits ON clients.id = deposits.client_id
+WHERE deposits.id IS NULL</pre>
+
+  <h2>Ключевые термины</h2>
+  <div class="chips">
+    <span class="chip">SELECT … FROM — что и откуда</span>
+    <span class="chip">WHERE — фильтр строк</span>
+    <span class="chip">ORDER BY … DESC/ASC — сортировка</span>
+    <span class="chip">JOIN — только совпавшие пары</span>
+    <span class="chip">LEFT JOIN — сохранить все левые строки</span>
+    <span class="chip">NULL — пусто (IS NULL / IS NOT NULL)</span>
+    <span class="chip">&gt; строго, &gt;= с равенством</span>
+  </div>
+
+  <div class="box good">
+    <span class="box-title">🎯 Проверь себя завтра (по базе банк.db)</span>
+    1. Все вклады продукта «Вклад» с суммой больше 100000, по убыванию суммы.<br>
+    2. Имя клиента и сумма для каждого вклада (JOIN).<br>
+    3. Клиенты из Москвы старше 30.<br>
+    4. Кто из клиентов без вкладов (LEFT JOIN + IS NULL).
+  </div>
+
+  <div class="nav">
+    <a href="03-bpmn-uml.html">← Конспект 3: BPMN и UML</a>
+    <a href="index.html">Оглавление →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+
+<script src="assets/mermaid.min.js"></script>
+<script>
+  var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'default', securityLevel: 'loose', fontFamily: 'Segoe UI, system-ui, sans-serif' });
+</script>
+</body>
+</html>
