@@ -122,6 +122,12 @@ figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin
 .svg-arrow { stroke: var(--ink-soft); stroke-width: 2; fill: none; }
 .svg-arrow-head { fill: var(--ink-soft); }
 .svg-dashed { stroke: var(--accent-2); stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+.svg-mgr { fill: var(--accent-2); stroke: var(--accent-2); stroke-width: 2; }
+.svg-sys { fill: var(--accent); stroke: var(--accent); stroke-width: 2; }
+.svg-ellipse { fill: var(--paper); stroke: var(--accent-2); stroke-width: 2; }
+.svg-line { stroke: var(--ink-soft); stroke-width: 1.6; fill: none; }
+.svg-life { stroke: var(--ink-soft); stroke-width: 1.4; fill: none; stroke-dasharray: 4 4; }
+.svg-legend { fill: var(--ink-soft); font-family: "Segoe UI", system-ui, sans-serif; font-size: 13px; }
 
 /* ---------- Блок сценария (Дано/Когда/Тогда) ---------- */
 .scenario {

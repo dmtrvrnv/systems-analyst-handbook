@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 3 — BPMN и UML</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html">0 · Профессия</a>
+    <a href="01-trebovaniya.html">1 · Требования</a>
+    <a href="02-kriterii-priemki.html">2 · Критерии приёмки</a>
+    <a href="03-bpmn-uml.html" class="active">3 · BPMN и UML</a>
+    <span class="nav-todo">4 · SQL и базы данных</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 3 · Нотации</span>
+  <h1>BPMN и UML: рисуем то, что описывали словами</h1>
+  <p class="subtitle">Схему процесса заказчик и разработчик читают за десять секунд. Текст из восьми шагов с развилкой — нет.</p>
+
+  <h2>BPMN — как течёт процесс</h2>
+  <p>
+    <strong>BPMN</strong> <span class="tr">(Business Process Model and Notation — нотация моделирования
+    бизнес-процессов)</span>. Алфавит маленький, четыре знака:
+  </p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Знак</th><th>Что означает</th></tr>
+    <tr><td>○ Событие <span class="tr">(event)</span></td><td>кружок: тонкий — старт, толстый — конец процесса</td></tr>
+    <tr><td>▭ Задача <span class="tr">(task)</span></td><td>скруглённый прямоугольник — одно действие</td></tr>
+    <tr><td>◇ Шлюз <span class="tr">(gateway)</span></td><td>ромб — развилка «если / иначе»</td></tr>
+    <tr><td>→ Поток <span class="tr">(sequence flow)</span></td><td>стрелка — порядок шагов</td></tr>
+  </table>
+  </div>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 800 200" role="img" aria-label="BPMN-схема процесса подбора продукта">
+        <defs>
+          <marker id="bh" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <!-- start -->
+        <circle cx="40" cy="70" r="14" fill="var(--paper)" stroke="var(--good)" stroke-width="2"/>
+        <text class="svg-sub" x="40" y="104" text-anchor="middle">клиент</text>
+        <text class="svg-sub" x="40" y="118" text-anchor="middle">спросил</text>
+        <!-- task2 manager -->
+        <rect class="svg-mgr" x="92" y="49" width="118" height="42" rx="9"/>
+        <text class="svg-label-hl" x="151" y="66" text-anchor="middle">Вводит</text>
+        <text class="svg-label-hl" x="151" y="82" text-anchor="middle">данные</text>
+        <!-- task3 system -->
+        <rect class="svg-sys" x="248" y="49" width="128" height="42" rx="9"/>
+        <text class="svg-label-hl" x="312" y="66" text-anchor="middle">Считает</text>
+        <text class="svg-label-hl" x="312" y="82" text-anchor="middle">доходность</text>
+        <!-- gateway -->
+        <polygon points="450,42 480,70 450,98 420,70" fill="var(--paper)" stroke="var(--rule)" stroke-width="2"/>
+        <path d="M441,61 L459,79 M459,61 L441,79" stroke="var(--rule)" stroke-width="2"/>
+        <text class="svg-sub" x="450" y="120" text-anchor="middle">доходность &lt; 0 ?</text>
+        <!-- outcome A up -->
+        <rect class="svg-mgr" x="548" y="14" width="176" height="40" rx="9"/>
+        <text class="svg-label-hl" x="636" y="39" text-anchor="middle">Предложить инвестпродукт</text>
+        <!-- outcome B down -->
+        <rect class="svg-mgr" x="548" y="98" width="176" height="40" rx="9"/>
+        <text class="svg-label-hl" x="636" y="123" text-anchor="middle">Оформить вклад</text>
+        <!-- end -->
+        <circle cx="758" cy="70" r="14" fill="var(--paper)" stroke="var(--bad)" stroke-width="4"/>
+        <!-- flows -->
+        <line class="svg-line" x1="54"  y1="70" x2="90"  y2="70" marker-end="url(#bh)"/>
+        <line class="svg-line" x1="210" y1="70" x2="246" y2="70" marker-end="url(#bh)"/>
+        <line class="svg-line" x1="376" y1="70" x2="420" y2="70" marker-end="url(#bh)"/>
+        <polyline class="svg-line" points="450,42 450,34 548,34" marker-end="url(#bh)"/>
+        <polyline class="svg-line" points="450,98 450,118 548,118" marker-end="url(#bh)"/>
+        <text class="svg-legend" x="470" y="28">да</text>
+        <text class="svg-legend" x="470" y="134">нет</text>
+        <polyline class="svg-line" points="724,34 744,34 744,60" marker-end="url(#bh)"/>
+        <polyline class="svg-line" points="724,118 744,118 744,84" marker-end="url(#bh)"/>
+      </svg>
+    </div>
+    <figcaption>
+      <span style="color:var(--accent-2)">■</span> действие менеджера &nbsp;
+      <span style="color:var(--accent)">■</span> действие системы &nbsp;·&nbsp; ромб — развилка
+    </figcaption>
+  </figure>
+
+  <div class="box note">
+    <span class="box-title">📌 Дорожки (swimlanes)</span>
+    В больших схемах шаги раскладывают по горизонтальным «дорожкам»: своя у менеджера, своя у системы —
+    сразу видно, кто за что отвечает. Здесь я показал это цветом, чтобы не загромождать картинку.
+  </div>
+
+  <h2>UML — язык моделирования систем</h2>
+  <p><strong>UML</strong> <span class="tr">(Unified Modeling Language)</span>. Берём две диаграммы из него.</p>
+
+  <h3>Use case — кто и что может делать</h3>
+  <p>Человечек-<strong>актор</strong> слева, овалы — действия, которые он выполняет с системой. Прямоугольник — граница системы.</p>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 520 230" role="img" aria-label="UML use case диаграмма">
+        <!-- actor -->
+        <circle cx="46" cy="70" r="12" class="svg-ellipse"/>
+        <line class="svg-line" x1="46" y1="82" x2="46" y2="118"/>
+        <line class="svg-line" x1="24" y1="96" x2="68" y2="96"/>
+        <line class="svg-line" x1="46" y1="118" x2="28" y2="146"/>
+        <line class="svg-line" x1="46" y1="118" x2="64" y2="146"/>
+        <text class="svg-label" x="46" y="168" text-anchor="middle">Менеджер</text>
+        <!-- system boundary -->
+        <rect x="150" y="16" width="358" height="200" rx="12" fill="none" stroke="var(--line)" stroke-width="2"/>
+        <text class="svg-sub" x="329" y="36" text-anchor="middle">Калькулятор подбора продукта</text>
+        <!-- use cases -->
+        <ellipse class="svg-ellipse" cx="330" cy="72"  rx="118" ry="24"/>
+        <text class="svg-label" x="330" y="77" text-anchor="middle">Рассчитать доходность</text>
+        <ellipse class="svg-ellipse" cx="330" cy="128" rx="118" ry="24"/>
+        <text class="svg-label" x="330" y="133" text-anchor="middle">Сравнить с инвестпродуктом</text>
+        <ellipse class="svg-ellipse" cx="330" cy="184" rx="118" ry="24"/>
+        <text class="svg-label" x="330" y="189" text-anchor="middle">Подобрать продукт клиенту</text>
+        <!-- links -->
+        <line class="svg-line" x1="68" y1="104" x2="212" y2="74"/>
+        <line class="svg-line" x1="68" y1="110" x2="212" y2="128"/>
+        <line class="svg-line" x1="68" y1="116" x2="212" y2="182"/>
+      </svg>
+    </div>
+    <figcaption>Одним взглядом видно весь набор возможностей менеджера.</figcaption>
+  </figure>
+
+  <h3>Sequence — кто кому и когда шлёт сообщения</h3>
+  <p>
+    Вертикальные линии — участники, стрелки — сообщения сверху вниз по времени. Тут виден твой
+    рефлекс из модуля 1: калькулятор идёт в базу данных за доходностью инвестпродукта.
+  </p>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 560 260" role="img" aria-label="UML sequence диаграмма">
+        <defs>
+          <marker id="sh" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <!-- heads -->
+        <rect class="svg-box" x="20"  y="14" width="120" height="34" rx="7"/>
+        <text class="svg-label" x="80"  y="36" text-anchor="middle">Менеджер</text>
+        <rect class="svg-box" x="230" y="14" width="120" height="34" rx="7"/>
+        <text class="svg-label" x="290" y="36" text-anchor="middle">Калькулятор</text>
+        <rect class="svg-box" x="430" y="14" width="120" height="34" rx="7"/>
+        <text class="svg-label" x="490" y="36" text-anchor="middle">База данных</text>
+        <!-- lifelines -->
+        <line class="svg-life" x1="80"  y1="48" x2="80"  y2="250"/>
+        <line class="svg-life" x1="290" y1="48" x2="290" y2="250"/>
+        <line class="svg-life" x1="490" y1="48" x2="490" y2="250"/>
+        <!-- messages -->
+        <text class="svg-sub" x="185" y="80"  text-anchor="middle">вводит данные</text>
+        <line class="svg-line" x1="80"  y1="88"  x2="290" y2="88"  marker-end="url(#sh)"/>
+        <text class="svg-sub" x="390" y="122" text-anchor="middle">запрос доходности</text>
+        <line class="svg-line" x1="290" y1="130" x2="490" y2="130" marker-end="url(#sh)"/>
+        <text class="svg-sub" x="390" y="164" text-anchor="middle">доходность инвестпродукта</text>
+        <line class="svg-life" x1="490" y1="172" x2="290" y2="172" marker-end="url(#sh)"/>
+        <text class="svg-sub" x="185" y="206" text-anchor="middle">результат сравнения</text>
+        <line class="svg-life" x1="290" y1="214" x2="80"  y2="214" marker-end="url(#sh)"/>
+      </svg>
+    </div>
+    <figcaption>Сплошная стрелка — запрос, пунктирная — ответ.</figcaption>
+  </figure>
+
+  <div class="box rule">
+    <span class="box-title">💡 Когда что рисовать</span>
+    <strong>BPMN</strong> — когда важен ход процесса и кто за что отвечает. <strong>Use case</strong> —
+    когда нужно показать набор возможностей. <strong>Sequence</strong> — когда важен обмен данными
+    между частями системы (и где всплывают запросы к базе и API).
+  </div>
+
+  <h2>Ключевые термины</h2>
+  <div class="chips">
+    <span class="chip">BPMN — схема бизнес-процесса</span>
+    <span class="chip">Задача / Событие / Шлюз / Поток</span>
+    <span class="chip">Дорожки — кто выполняет шаг</span>
+    <span class="chip">UML — язык моделирования</span>
+    <span class="chip">Use case — кто что может</span>
+    <span class="chip">Sequence — обмен сообщениями по времени</span>
+    <span class="chip">Актор — человечек-пользователь</span>
+  </div>
+
+  <div class="nav">
+    <a href="02-kriterii-priemki.html">← Конспект 2: Критерии приёмки</a>
+    <a href="index.html">Оглавление →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+</body>
+</html>
