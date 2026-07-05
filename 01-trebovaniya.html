@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Конспект 1 — Требования</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#128202;</text></svg>">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -42,43 +43,17 @@
 
   <figure>
     <div class="diagram">
-      <svg viewBox="0 0 660 200" role="img" aria-label="Актор пользуется системой, стейкхолдеры получают выгоду">
-        <defs>
-          <marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
-            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
-          </marker>
-        </defs>
-        <!-- actor -->
-        <circle class="svg-box" cx="70" cy="60" r="16"/>
-        <line class="svg-box" x1="70" y1="76" x2="70" y2="112"/>
-        <line class="svg-box" x1="46" y1="90" x2="94" y2="90"/>
-        <line class="svg-box" x1="70" y1="112" x2="52" y2="140"/>
-        <line class="svg-box" x1="70" y1="112" x2="88" y2="140"/>
-        <text class="svg-label" x="70" y="162" text-anchor="middle">Менеджер</text>
-        <text class="svg-sub"   x="70" y="180" text-anchor="middle">актор — пользуется</text>
-
-        <!-- system -->
-        <rect class="svg-box-hl" x="250" y="70" width="160" height="70" rx="10"/>
-        <text class="svg-label-hl" x="330" y="100" text-anchor="middle">Калькулятор</text>
-        <text class="svg-label-hl" x="330" y="120" text-anchor="middle">доходности</text>
-
-        <!-- arrow actor -> system -->
-        <line class="svg-arrow" x1="150" y1="105" x2="248" y2="105" marker-end="url(#ah2)"/>
-        <text class="svg-sub" x="199" y="96" text-anchor="middle">пользуется</text>
-
-        <!-- stakeholders -->
-        <rect class="svg-box" x="520" y="40" width="128" height="48" rx="9"/>
-        <text class="svg-label" x="584" y="70" text-anchor="middle">Банк</text>
-        <rect class="svg-box" x="520" y="120" width="128" height="48" rx="9"/>
-        <text class="svg-label" x="584" y="150" text-anchor="middle">Клиент</text>
-
-        <!-- arrows system -> stakeholders -->
-        <path class="svg-dashed" d="M410,95 C460,80 470,64 518,64" marker-end="url(#ah2)"/>
-        <path class="svg-dashed" d="M410,115 C460,130 470,144 518,144" marker-end="url(#ah2)"/>
-        <text class="svg-sub" x="470" y="185" text-anchor="middle">стейкхолдеры — получают выгоду</text>
-      </svg>
+<pre class="mermaid">
+flowchart LR
+  M(("Менеджер")):::actor -->|пользуется| S["Калькулятор<br/>доходности"]:::hl
+  S -. выгода .-> BANK["Банк"]:::sh
+  S -. выгода .-> CL["Клиент"]:::sh
+  classDef actor fill:#2f6f8f,stroke:#2f6f8f,color:#fff;
+  classDef hl fill:#b1121f,stroke:#b1121f,color:#fff;
+  classDef sh fill:#eef4f7,stroke:#2f6f8f,color:#20323b;
+</pre>
     </div>
-    <figcaption>Систему проектируют под актора, а обосновывают через выгоду стейкхолдеров.</figcaption>
+    <figcaption>Систему проектируют под актора (кто жмёт кнопки), а обосновывают через выгоду стейкхолдеров.</figcaption>
   </figure>
 
   <ul>
@@ -135,41 +110,16 @@
 
   <figure>
     <div class="diagram">
-      <svg viewBox="0 0 660 210" role="img" aria-label="Входные данные, система, выходные данные">
-        <defs>
-          <marker id="ah3" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
-            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
-          </marker>
-        </defs>
-        <!-- inputs -->
-        <text class="svg-sub" x="80" y="24" text-anchor="middle">ВХОД</text>
-        <rect class="svg-box" x="14" y="40"  width="132" height="34" rx="7"/>
-        <text class="svg-label" x="80" y="62" text-anchor="middle">Сумма</text>
-        <rect class="svg-box" x="14" y="86"  width="132" height="34" rx="7"/>
-        <text class="svg-label" x="80" y="108" text-anchor="middle">Ставка, %</text>
-        <rect class="svg-box" x="14" y="132" width="132" height="34" rx="7"/>
-        <text class="svg-label" x="80" y="154" text-anchor="middle">Инфляция, %</text>
-
-        <!-- system -->
-        <rect class="svg-box-hl" x="264" y="70" width="140" height="66" rx="10"/>
-        <text class="svg-label-hl" x="334" y="100" text-anchor="middle">Расчёт по</text>
-        <text class="svg-label-hl" x="334" y="120" text-anchor="middle">формуле Фишера</text>
-
-        <!-- outputs -->
-        <text class="svg-sub" x="574" y="24" text-anchor="middle">ВЫХОД</text>
-        <rect class="svg-box" x="510" y="60"  width="132" height="34" rx="7"/>
-        <text class="svg-label" x="576" y="82" text-anchor="middle">Реальная сумма</text>
-        <rect class="svg-box" x="510" y="112" width="132" height="34" rx="7"/>
-        <text class="svg-label" x="576" y="134" text-anchor="middle">Разница с вкладом</text>
-
-        <!-- arrows in -->
-        <line class="svg-arrow" x1="146" y1="57"  x2="262" y2="92"  marker-end="url(#ah3)"/>
-        <line class="svg-arrow" x1="146" y1="103" x2="262" y2="103" marker-end="url(#ah3)"/>
-        <line class="svg-arrow" x1="146" y1="149" x2="262" y2="114" marker-end="url(#ah3)"/>
-        <!-- arrows out -->
-        <line class="svg-arrow" x1="404" y1="95"  x2="508" y2="77"  marker-end="url(#ah3)"/>
-        <line class="svg-arrow" x1="404" y1="111" x2="508" y2="129" marker-end="url(#ah3)"/>
-      </svg>
+<pre class="mermaid">
+flowchart LR
+  in1["Сумма"] --> SYS
+  in2["Ставка, %"] --> SYS
+  in3["Инфляция, %"] --> SYS
+  SYS["Расчёт по формуле<br/>Фишера"]:::hl
+  SYS --> o1["Реальная сумма"]
+  SYS --> o2["Разница с вкладом"]
+  classDef hl fill:#b1121f,stroke:#b1121f,color:#fff;
+</pre>
     </div>
     <figcaption>Описав вход и выход, ты уже наполовину описал систему.</figcaption>
   </figure>
@@ -217,5 +167,11 @@
 </article>
   </main>
 </div>
+
+<script src="assets/mermaid.min.js"></script>
+<script>
+  var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'default', securityLevel: 'loose', fontFamily: 'Segoe UI, system-ui, sans-serif' });
+</script>
 </body>
 </html>
