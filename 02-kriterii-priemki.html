@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 2 — Критерии приёмки</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html">0 · Профессия</a>
+    <a href="01-trebovaniya.html">1 · Требования</a>
+    <a href="02-kriterii-priemki.html" class="active">2 · Критерии приёмки</a>
+    <span class="nav-todo">3 · BPMN и UML</span>
+    <span class="nav-todo">4 · SQL и базы данных</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 2 · Критерии приёмки</span>
+  <h1>Критерии приёмки: когда «готово» значит одно и то же</h1>
+  <p class="subtitle">Как зафиксировать поведение системы, чтобы аналитик, разработчик и тестировщик поняли его одинаково.</p>
+
+  <h2>Зачем они нужны</h2>
+  <p>Возьмём требование из прошлого модуля:</p>
+  <div class="box note">
+    <span class="box-title">Требование</span>
+    Система должна рассчитывать реальную доходность вклада с учётом инфляции.
+  </div>
+  <p>
+    Требование говорит <strong>что</strong> делать, но не говорит, <strong>как проверить,
+    что сделано верно</strong>. Отдай его двум разработчикам — получишь два разных калькулятора.
+    Один округлит до целых, другой до копеек. Один при инфляции выше ставки покажет минус,
+    другой про этот случай не подумает.
+  </p>
+  <div class="box rule">
+    <span class="box-title">💡 Что такое критерий приёмки</span>
+    <strong>Критерий приёмки</strong> <span class="tr">(acceptance criteria)</span> — условие,
+    при котором требование считается выполненным. Это мост между требованием и тестом: все
+    трое смотрят на него и одинаково понимают слово «готово».
+  </div>
+
+  <h2>Формат «Дано / Когда / Тогда»</h2>
+  <p>Мировой стандарт записи — три строки. В оригинале это язык <strong>Gherkin</strong> <span class="tr">(«Given / When / Then», читается «геркин»)</span>.</p>
+
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 660 130" role="img" aria-label="Три шага: Дано, Когда, Тогда">
+        <defs>
+          <marker id="ah4" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+            <path class="svg-arrow-head" d="M0,0 L8,4 L0,8 Z"/>
+          </marker>
+        </defs>
+        <rect class="svg-box" x="16" y="34" width="180" height="62" rx="10"/>
+        <text class="svg-label" x="106" y="62" text-anchor="middle">ДАНО</text>
+        <text class="svg-sub"   x="106" y="82" text-anchor="middle">состояние до действия</text>
+
+        <rect class="svg-box" x="240" y="34" width="180" height="62" rx="10"/>
+        <text class="svg-label" x="330" y="62" text-anchor="middle">КОГДА</text>
+        <text class="svg-sub"   x="330" y="82" text-anchor="middle">действие пользователя</text>
+
+        <rect class="svg-box-hl" x="464" y="34" width="180" height="62" rx="10"/>
+        <text class="svg-label-hl" x="554" y="62" text-anchor="middle">ТОГДА</text>
+        <text class="svg-label-hl" x="554" y="82" text-anchor="middle" style="font-weight:400;font-size:12px">ожидаемый результат</text>
+
+        <line class="svg-arrow" x1="196" y1="65" x2="238" y2="65" marker-end="url(#ah4)"/>
+        <line class="svg-arrow" x1="420" y1="65" x2="462" y2="65" marker-end="url(#ah4)"/>
+      </svg>
+    </div>
+    <figcaption>Дано — контекст, Когда — действие, Тогда — проверяемый результат.</figcaption>
+  </figure>
+
+  <h2>Пример на калькуляторе</h2>
+  <p>Требование одно, а сценариев к нему несколько.</p>
+
+  <div class="scenario">
+    <div class="s-name">Сценарий 1 — обычный случай (счастливый путь)</div>
+    <b>Дано:</b> пользователь открыл калькулятор доходности<br>
+    <b>Когда:</b> вводит сумму 100 000 ₽, ставку 12%, инфляцию 8%<br>
+    <b>Тогда:</b> система показывает реальную доходность ≈ 3,7% годовых и реальную сумму ≈ 103 700 ₽
+  </div>
+
+  <div class="scenario">
+    <div class="s-name">Сценарий 2 — инфляция съедает вклад</div>
+    <b>Дано:</b> пользователь на калькуляторе<br>
+    <b>Когда:</b> вводит ставку 6% и инфляцию 9%<br>
+    <b>Тогда:</b> реальная доходность отрицательная (−2,75%), число подсвечено красным как предупреждение
+  </div>
+
+  <div class="scenario">
+    <div class="s-name">Сценарий 3 — пустое поле</div>
+    <b>Дано:</b> пользователь на калькуляторе<br>
+    <b>Когда:</b> оставляет поле «инфляция» пустым<br>
+    <b>Тогда:</b> расчёт не запускается, под полем подсказка «введите инфляцию»
+  </div>
+
+  <div class="box rule">
+    <span class="box-title">📌 Схема, которую спрашивают на собесе</span>
+    Одно требование → один <strong>счастливый путь</strong> <span class="tr">(happy path — когда всё
+    вводят верно)</span> + несколько <strong>граничных случаев</strong> <span class="tr">(edge cases —
+    крайности: ноль, минус, пусто, слишком много)</span>. Джуна часто заваливают тем, что он
+    описывает только сценарий 1 и забывает про 2 и 3.
+  </div>
+
+  <h2>Две ошибки, на которых легко попасться</h2>
+
+  <h3>Ошибка 1. Расплывчатый результат</h3>
+  <p>
+    «Система сравнивает оба значения» — это как запрещённое «правильно» из модуля 1. Тестировщик
+    спросит: сравнивает — это как? Делаем наблюдаемым: <em>показывает разницу в рублях и выделяет
+    более выгодный вариант.</em>
+  </p>
+
+  <h3>Ошибка 2. Внутренняя кухня в «Тогда»</h3>
+  <p>
+    «Доход по инвестпродукту тянется из базы данных» — это <em>как система устроена внутри</em>, а
+    пользователь этого не видит. Критерий описывает поведение чёрного ящика: только наблюдаемое
+    снаружи. Откуда берётся доходность — отдельное требование про источник данных, в сценарий оно не входит.
+  </p>
+
+  <div class="box good">
+    <span class="box-title">✅ Слабый сценарий → готовый критерий</span>
+    <b>Было:</b> «показывает доход по вкладу и инвестпродукту, сравнивая оба значения (тянется из базы)».<br>
+    <b>Стало:</b> «показывает реальный доход по вкладу и по инвестпродукту за 12 месяцев с учётом
+    инфляции, выделяет более выгодный вариант и разницу между ними в рублях».<br>
+    По второму варианту тест пишется без единого уточняющего вопроса.
+  </div>
+
+  <h2>Ключевые термины</h2>
+  <div class="chips">
+    <span class="chip">Критерий приёмки — когда требование «готово»</span>
+    <span class="chip">Дано / Когда / Тогда — формат записи (Gherkin)</span>
+    <span class="chip">Счастливый путь — всё введено верно</span>
+    <span class="chip">Граничный случай — ноль, минус, пусто</span>
+    <span class="chip">Наблюдаемое поведение — что видно снаружи</span>
+  </div>
+
+  <div class="nav">
+    <a href="01-trebovaniya.html">← Конспект 1: Требования</a>
+    <a href="index.html">Оглавление →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+</body>
+</html>

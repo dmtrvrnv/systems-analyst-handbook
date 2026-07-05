@@ -123,6 +123,14 @@ figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin
 .svg-arrow-head { fill: var(--ink-soft); }
 .svg-dashed { stroke: var(--accent-2); stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
 
+/* ---------- Блок сценария (Дано/Когда/Тогда) ---------- */
+.scenario {
+  background: var(--chip-bg); border: 1px solid var(--line); border-left: 4px solid var(--accent-2);
+  border-radius: 8px; padding: 14px 16px; margin: 14px 0; font-size: 16px; line-height: 1.55;
+}
+.scenario .s-name { font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.scenario b { color: var(--accent-2); display: inline-block; min-width: 62px; }
+
 /* ---------- Навигация низа ---------- */
 .nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--line); font-size: 15px; }
 .nav a { text-decoration: none; color: var(--accent-2); font-weight: 600; }
