@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Конспект 5 — Агрегаты и GROUP BY</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#128202;</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Путь в системные&nbsp;аналитики</span>
+    </a>
+    <div class="nav-group">Начало</div>
+    <a href="index.html">Главная</a>
+    <div class="nav-group">Модули</div>
+    <a href="00-professiya-sistemnyy-analitik.html">0 · Профессия</a>
+    <a href="01-trebovaniya.html">1 · Требования</a>
+    <a href="02-kriterii-priemki.html">2 · Критерии приёмки</a>
+    <a href="03-bpmn-uml.html">3 · BPMN и UML</a>
+    <a href="04-sql-osnovy.html">4 · SQL: основы</a>
+    <a href="05-agregaty.html" class="active">5 · Агрегаты и GROUP BY</a>
+    <span class="nav-todo">6 · Дальше…</span>
+    <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
+  </aside>
+  <main class="content">
+<article class="paper">
+
+  <span class="kicker">Модуль 5 · SQL</span>
+  <h1>Агрегаты и GROUP BY: считать итоги</h1>
+  <p class="subtitle">До сих пор SQL показывал строки как есть. Агрегаты делают наоборот — сминают кучу строк в одно число: сколько, на сколько, в среднем.</p>
+
+  <div class="box note">
+    <span class="box-title">🧮 Главная идея: из многих строк — одно число</span>
+    Обычный <code>SELECT</code> работает построчно. <b>Агрегат</b> (от англ. <i>aggregate</i> — «сводить вместе»)
+    берёт целый столбец и сворачивает его в один итог. Три главных, которые закрывают почти всё:
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>Агрегат</th><th>Отвечает на вопрос</th><th>Пример</th></tr>
+    <tr><td><code>COUNT</code></td><td><b>Сколько</b> строк (штук)</td><td><code>COUNT(*)</code></td></tr>
+    <tr><td><code>SUM</code></td><td>На <b>какую сумму</b> (сложить)</td><td><code>SUM(amount)</code></td></tr>
+    <tr><td><code>AVG</code></td><td><b>Среднее</b> (средний чек)</td><td><code>AVG(amount)</code></td></tr>
+  </table>
+  </div>
+
+  <h2>COUNT — сколько штук</h2>
+  <pre class="scenario">SELECT COUNT(*) FROM deposits</pre>
+  <p><code>COUNT(*)</code> — «сосчитай все строки подряд» (звёздочка = «все», как и в <code>SELECT *</code>). Вернёт одно число — сколько всего вкладов.</p>
+  <p>С фильтром считаем только нужное — например, сколько именно продуктов «Вклад»:</p>
+  <pre class="scenario">SELECT COUNT(*) FROM deposits WHERE product = 'Вклад'</pre>
+
+  <h2>AS — дать колонке имя</h2>
+  <p>Когда считаешь число «на лету», у колонки нет своего имени, и SQL подпишет её буквально текстом запроса — <code>count(*)</code>.
+  Чтобы заголовок был человеческим — псевдоним через <code>AS</code> (англ. «как»):</p>
+  <pre class="scenario">SELECT COUNT(*) AS количество_вкладов FROM deposits WHERE product = 'Вклад'</pre>
+  <div class="box bad">
+    <span class="box-title">🚫 Грабли: «количество» ≠ «сумма»</span>
+    <code>COUNT</code> считает <b>штуки</b> (сколько сделок), <code>SUM</code> складывает <b>деньги</b> (на какой объём).
+    Это разные вопросы — и в бизнесе тоже: план бывает по числу сделок и по обороту. Не путай их даже в названии колонки.
+  </div>
+
+  <h2>SUM и AVG — деньги и средний чек</h2>
+  <pre class="scenario">SELECT SUM(amount) AS объём_вкладов  FROM deposits WHERE product = 'Вклад'
+SELECT AVG(amount) AS средний_чек    FROM deposits WHERE product = 'Вклад'</pre>
+  <p>В скобках — <b>конкретный столбец</b>, который складываем или усредняем (не <code>*</code>, а именно <code>amount</code>).</p>
+
+  <h2>GROUP BY — итог по каждой группе сразу</h2>
+  <p>Считать средний чек по каждому продукту отдельными запросами (<code>WHERE product = 'Вклад'</code>, потом <code>'ПДС'</code>, потом <code>'НСЖ'</code>…) — тоскливо.
+  <code>GROUP BY</code> (англ. «сгруппировать по») делает это одним запросом.</p>
+  <div class="box note">
+    <span class="box-title">🗃 Как это представить: разложить строки по кучкам</span>
+    <code>GROUP BY product</code> = «раздели все строки на кучки по продукту, и посчитай агрегат для <b>каждой</b> кучки».
+    Вместо одного числа получаешь <b>строку на каждую группу</b>.
+  </div>
+  <pre class="scenario">SELECT product, AVG(amount) AS средний_чек
+FROM deposits
+GROUP BY product</pre>
+  <div class="table-wrap">
+  <table>
+    <tr><th>product</th><th>средний_чек</th></tr>
+    <tr><td>Альфа-Инвестиции</td><td>516&nbsp;666</td></tr>
+    <tr><td>Вклад</td><td>271&nbsp;666</td></tr>
+    <tr><td>НСЖ</td><td>150&nbsp;000</td></tr>
+    <tr><td>ПДС</td><td>160&nbsp;000</td></tr>
+  </table>
+  </div>
+  <p>Один запрос — и сразу виден бизнес-вывод: у инвестиций средний чек вдвое выше, чем у обычного вклада.</p>
+
+  <div class="box bad">
+    <span class="box-title">🚫 Главная ловушка GROUP BY: сырой столбец врёт</span>
+    Если написать <code>SELECT product, amount … GROUP BY product</code>, то в кучке «Вклад» шесть разных сумм —
+    <b>какую из них показать?</b> SQL молча возьмёт первую попавшуюся (например, 100000 вместо среднего 271666).
+    Число будет выглядеть настоящим, но соврёт.
+    <br><br>
+    <b>Правило:</b> после <code>GROUP BY</code> каждый столбец в <code>SELECT</code> — либо тот, по которому группируешь
+    (<code>product</code>), либо завёрнут в агрегат (<code>AVG(amount)</code>). Сырой столбец из кучки показывать нельзя.
+  </div>
+
+  <h2>JOIN + GROUP BY — самая частая связка</h2>
+  <p>Группировать удобнее по-человечески — не по номеру клиента, а по имени. Имя лежит в <code>clients</code>, значит склеиваем листы и группируем по имени:</p>
+  <pre class="scenario">SELECT clients.name, COUNT(*) AS вкладов
+FROM deposits
+JOIN clients ON deposits.client_id = clients.id
+GROUP BY clients.name</pre>
+  <p>Получаем «сколько вкладов у каждого клиента» — по именам. Это готовая строка для отчёта или дашборда.</p>
+  <div class="box rule">
+    <span class="box-title">💡 Кто попадёт в результат</span>
+    Обычный <code>JOIN</code> покажет только тех, у кого есть хотя бы один вклад. Клиент без вкладов не образует кучку — и выпадет.
+    Если нужно показать и его (с нулём) — берётся <code>LEFT JOIN</code> (см. <a href="04-sql-osnovy.html">конспект 4</a>).
+    И помни: клеим по ключу <b>число = число</b> (<code>client_id = id</code>), а не id = имя.
+  </div>
+
+  <h2>Ключевые слова</h2>
+  <div class="chips">
+    <span class="chip">COUNT — сколько штук</span>
+    <span class="chip">SUM — сложить деньги</span>
+    <span class="chip">AVG — средний чек</span>
+    <span class="chip">AS — имя колонки</span>
+    <span class="chip">GROUP BY — итог по группам</span>
+    <span class="chip">только группа-столбец или агрегат в SELECT</span>
+    <span class="chip">JOIN + GROUP BY — итоги по именам</span>
+  </div>
+
+  <div class="box good">
+    <span class="box-title">🎯 Проверь себя на базе банк.db (без подсказок)</span>
+    1. Сколько всего вкладов и на какую общую сумму (COUNT и SUM).<br>
+    2. Средний чек по каждому продукту (GROUP BY product).<br>
+    3. Сколько вкладов у каждого клиента по имени (JOIN + GROUP BY).<br>
+    4. Общая сумма вкладов по каждому городу (JOIN с clients + GROUP BY city).
+  </div>
+
+  <div class="nav">
+    <a href="04-sql-osnovy.html">← Конспект 4: SQL основы</a>
+    <a href="index.html">Оглавление →</a>
+  </div>
+
+</article>
+  </main>
+</div>
+</body>
+</html>

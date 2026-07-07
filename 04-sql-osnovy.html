@@ -22,7 +22,8 @@
     <a href="02-kriterii-priemki.html">2 · Критерии приёмки</a>
     <a href="03-bpmn-uml.html">3 · BPMN и UML</a>
     <a href="04-sql-osnovy.html" class="active">4 · SQL: основы</a>
-    <span class="nav-todo">5 · Агрегаты (SUM, GROUP BY)</span>
+    <a href="05-agregaty.html">5 · Агрегаты и GROUP BY</a>
+    <span class="nav-todo">6 · Дальше…</span>
     <div class="side-foot">Живой конспект — обновляется по мере обучения.</div>
   </aside>
   <main class="content">
@@ -30,23 +31,30 @@
 
   <span class="kicker">Модуль 4 · SQL</span>
   <h1>SQL: достать данные из базы</h1>
-  <p class="subtitle">Навык №1 в любой вакансии аналитика. Язык, которым «спрашивают» базу данных.</p>
+  <p class="subtitle">Навык №1 в любой вакансии аналитика. Язык, которым «спрашивают» базу данных. Разбираю медленно, по одному слову — так, чтобы понимать, а не заучивать.</p>
 
-  <div class="box rule">
-    <span class="box-title">⚡ Шпаргалка для заучивания</span>
-    Любой запрос собирается из этих кубиков, всегда в таком порядке:
-<pre class="scenario" style="border-left-color:var(--rule)">
-<b>SELECT</b>   столбцы    — <span style="color:var(--ink-soft)">ЧТО достать (или * — всё)</span>
-<b>FROM</b>     таблица    — <span style="color:var(--ink-soft)">ОТКУДА</span>
-<b>JOIN</b>     таблица2 ON условие  — <span style="color:var(--ink-soft)">склеить со второй таблицей</span>
-<b>WHERE</b>    условие    — <span style="color:var(--ink-soft)">КАКИЕ строки (фильтр)</span>
-<b>ORDER BY</b> столбец    — <span style="color:var(--ink-soft)">КАК отсортировать</span>
-</pre>
-    Обязательны только <b>SELECT</b> и <b>FROM</b>. Остальное — по надобности. Регистр не важен: <code>SELECT</code> = <code>select</code>.
+  <div class="box note">
+    <span class="box-title">🗂 Как это представить: база — это книга с листами Excel</span>
+    Одна <b>таблица</b> — это один лист Excel: строки и столбцы. В нашей учебной базе два листа:
+    <code>clients</code> (клиенты) и <code>deposits</code> (вклады). SQL — это способ задавать листам вопросы:
+    «покажи вот эти столбцы, только такие строки, отсортируй так». Ответ всегда приходит в виде новой таблички.
   </div>
 
+  <h2>Запрос собирается из «комнат» — всегда в одном порядке</h2>
+  <p>У любого запроса есть строгий каркас. Каждая строка-«комната» отвечает за своё, и идут они всегда в этом порядке:</p>
+<pre class="scenario">
+<b>SELECT</b>   столбцы            — <span style="color:var(--ink-soft)">ЧТО показать (или * — все столбцы)</span>
+<b>FROM</b>     таблица            — <span style="color:var(--ink-soft)">ОТКУДА, главный лист</span>
+<b>JOIN</b>     лист2 <b>ON</b> правило  — <span style="color:var(--ink-soft)">приклеить второй лист и ПО КАКОМУ правилу</span>
+<b>WHERE</b>    условие            — <span style="color:var(--ink-soft)">КАКИЕ строки оставить (фильтр)</span>
+<b>ORDER BY</b> столбец            — <span style="color:var(--ink-soft)">КАК отсортировать</span>
+</pre>
+  <p>Обязательны только <b>SELECT</b> и <b>FROM</b> — «что» и «откуда». Остальное добавляют по надобности.
+  Регистр букв не важен: <code>SELECT</code> = <code>select</code>. А вот имена столбцов и таблиц — буква в букву.</p>
+
   <h2>Учебная база</h2>
-  <p>Две таблицы. Столбец <code>client_id</code> во вкладах указывает на <code>id</code> клиента — это связь между ними.</p>
+  <p>Два листа. Столбец <code>client_id</code> во вкладах указывает на <code>id</code> клиента — это <b>ключ</b>, ниточка между листами.
+  Один клиент может иметь много вкладов.</p>
 
   <figure>
     <div class="diagram">
@@ -61,7 +69,7 @@ erDiagram
   }
   deposits {
     int id
-    int client_id "чей вклад"
+    int client_id "чей вклад (ключ)"
     text product "продукт"
     int amount "сумма"
     real rate "ставка %"
@@ -74,7 +82,13 @@ erDiagram
 
   <h2>SELECT … FROM — что и откуда</h2>
   <pre class="scenario">SELECT name, city FROM clients</pre>
-  <p>Достать столбцы <code>name</code> и <code>city</code> из таблицы <code>clients</code>. Звёздочка <code>*</code> — все столбцы сразу.</p>
+  <p>«Покажи столбцы <code>name</code> и <code>city</code> из листа <code>clients</code>». Звёздочка <code>*</code> — «все столбцы сразу».</p>
+  <div class="box bad">
+    <span class="box-title">🚫 Грабли: пропущенная запятая</span>
+    Столбцы в <code>SELECT</code> разделяются запятой. Если её забыть — <code>SELECT name city</code> — SQL поймёт
+    второе слово как <b>псевдоним</b> (другое имя) для первого, и покажет <code>name</code> под заголовком <code>city</code>.
+    Один пропущенный символ — и данные подписаны неверно.
+  </div>
 
   <h2>WHERE — фильтр строк</h2>
   <pre class="scenario">SELECT * FROM clients WHERE age &gt; 30</pre>
@@ -89,70 +103,82 @@ erDiagram
   </table>
   </div>
   <div class="box bad">
-    <span class="box-title">🚫 Ловушка: строго или нет</span>
-    <code>rate &gt; 12</code> НЕ включает ровно 12. Чтобы «12 и выше» — нужно <code>rate &gt;= 12</code>. Одна чёрточка меняет ответ.
-    Текст в условии — всегда в одинарных кавычках: <code>'Москва'</code>.
+    <span class="box-title">🚫 Грабли: строго или нет</span>
+    <code>age &gt; 30</code> НЕ включает ровно 30. Чтобы «30 и старше» — нужно <code>age &gt;= 30</code>. Одна чёрточка меняет ответ.<br>
+    Текст в условии — всегда в <b>одинарных кавычках</b>: <code>'Москва'</code>. Число — без кавычек.
   </div>
 
   <h2>ORDER BY — сортировка</h2>
   <pre class="scenario">SELECT * FROM deposits WHERE rate &gt; 12 ORDER BY amount DESC</pre>
-  <p><code>DESC</code> — по убыванию (от большего к меньшему), <code>ASC</code> — по возрастанию (по умолчанию, можно не писать).</p>
+  <p><code>DESC</code> — по убыванию (от большего к меньшему), <code>ASC</code> — по возрастанию (по умолчанию, можно не писать).
+  После <code>ORDER BY</code> обязательно назвать столбец — иначе SQL скажет, что запрос не дописан.</p>
 
-  <h2>JOIN — склеить две таблицы</h2>
-  <p>Во вкладах есть только <code>client_id</code> (номер), а имя лежит в <code>clients</code>. <code>JOIN</code> подтягивает имя к каждому вкладу.</p>
+  <h2>JOIN — склеить два листа по ключу</h2>
+  <p>Во вкладах есть только <code>client_id</code> (номер), а имя лежит в другом листе — <code>clients</code>.
+  <code>JOIN</code> подтягивает имя к каждому вкладу, склеивая листы <b>по правилу</b>.</p>
   <pre class="scenario">SELECT clients.name, deposits.product, deposits.amount
 FROM deposits
 JOIN clients ON deposits.client_id = clients.id</pre>
   <ul>
-    <li><code>JOIN clients</code> — присоединить вторую таблицу;</li>
-    <li><code>ON deposits.client_id = clients.id</code> — мостик: где номер клиента во вкладе = id клиента;</li>
-    <li><code>таблица.столбец</code> — уточняем, из какой таблицы столбец.</li>
+    <li><code>JOIN clients</code> — присоединить второй лист;</li>
+    <li><code>ON deposits.client_id = clients.id</code> — <b>правило склейки</b>: строку вклада клеим к строке клиента там, где номер клиента во вкладе = id клиента;</li>
+    <li><code>лист.столбец</code> — уточняем, из какого листа берём столбец (порядок важен: <code>deposits.amount</code>, а не наоборот).</li>
   </ul>
   <div class="box note">
-    <span class="box-title">📌 Почему строк ровно столько</span>
-    <code>JOIN</code> даёт одну строку на каждую <strong>совпавшую пару</strong>. 12 вкладов → 12 строк.
-    У кого 2 вклада — попадёт дважды. У кого вкладов нет — <strong>выпадет совсем</strong>.
+    <span class="box-title">📌 Зачем нужно ON: декартово произведение</span>
+    Без <code>ON</code> SQL склеил бы <b>каждую</b> строку одного листа с <b>каждой</b> строкой другого:
+    8 клиентов × 12 вкладов = 96 строк-бессмыслиц. <code>ON</code> — это правило, которое из этих 96 оставляет
+    только осмысленные пары (где id совпадает). Отсюда и ровно 12 строк — по одной на вклад.
   </div>
 
-  <h2>LEFT JOIN и NULL — сохранить всех</h2>
-  <p>Обычный <code>JOIN</code> выкидывает строки без пары. <code>LEFT JOIN</code> оставляет все строки из <strong>левой</strong> таблицы (той, что до <code>LEFT JOIN</code>), а пустые места заполняет <code>NULL</code>.</p>
+  <h2>LEFT JOIN и NULL — сохранить всех, найти «кого нет»</h2>
+  <p>Обычный <code>JOIN</code> выкидывает строки без пары. Клиент без вкладов в него не попадёт вовсе.
+  <code>LEFT JOIN</code> оставляет <b>все</b> строки из <b>левого</b> листа (того, что стоит до <code>LEFT JOIN</code>),
+  а пустые места справа заполняет <code>NULL</code>.</p>
   <pre class="scenario">SELECT clients.name, deposits.product, deposits.amount
 FROM clients
 LEFT JOIN deposits ON clients.id = deposits.client_id</pre>
-  <p>Вернёт всех 8 клиентов. У кого нет вклада — в <code>product</code> и <code>amount</code> будет <code>NULL</code>.</p>
+  <p>Вернёт всех 8 клиентов. У кого вклада нет — в <code>product</code> и <code>amount</code> будет <code>NULL</code>.</p>
   <div class="box rule">
-    <span class="box-title">💡 NULL — это «пусто», не ноль</span>
-    <code>NULL</code> значит «значения нет». Проверять через <code>=</code> нельзя: <code>WHERE amount = NULL</code> не сработает.
-    Только <code>IS NULL</code> (пусто) и <code>IS NOT NULL</code> (не пусто).
+    <span class="box-title">💡 NULL — это «дырка», а не ноль</span>
+    <code>NULL</code> значит «значения нет вообще». Это не 0 и не пустая строка — это отсутствие.
+    Поэтому сравнивать через <code>=</code> нельзя: <code>WHERE amount = NULL</code> молча вернёт «неправда» и покажет пустоту.
+    Для дырок — особый оператор: <code>IS NULL</code> (пусто) и <code>IS NOT NULL</code> (не пусто).
   </div>
-  <p>Практическая задача — «кто не купил ни одного продукта»:</p>
-  <pre class="scenario">SELECT clients.name
+  <p>Практическая задача продажника — «кто не оформил ни одного продукта» (спящие клиенты для обзвона):</p>
+  <pre class="scenario">SELECT clients.id, clients.name
 FROM clients
 LEFT JOIN deposits ON clients.id = deposits.client_id
-WHERE deposits.id IS NULL</pre>
+WHERE deposits.amount IS NULL</pre>
+  <div class="box note">
+    <span class="box-title">📌 Из какого листа брать столбец</span>
+    У клиента без вкладов весь правый лист — сплошная дырка, поэтому <code>deposits.client_id</code> тоже <code>NULL</code>.
+    Чтобы увидеть настоящий номер, берём <code>clients.id</code> — из <b>левого, реального</b> листа.
+    Всегда осознавай, из какого листа тянешь столбец: одни и те же данные из левого и правого могут отличаться.
+  </div>
 
-  <h2>Ключевые термины</h2>
+  <h2>Ключевые слова</h2>
   <div class="chips">
     <span class="chip">SELECT … FROM — что и откуда</span>
     <span class="chip">WHERE — фильтр строк</span>
     <span class="chip">ORDER BY … DESC/ASC — сортировка</span>
-    <span class="chip">JOIN — только совпавшие пары</span>
+    <span class="chip">JOIN … ON — склейка по ключу</span>
     <span class="chip">LEFT JOIN — сохранить все левые строки</span>
-    <span class="chip">NULL — пусто (IS NULL / IS NOT NULL)</span>
+    <span class="chip">NULL — дырка (IS NULL / IS NOT NULL)</span>
     <span class="chip">&gt; строго, &gt;= с равенством</span>
   </div>
 
   <div class="box good">
-    <span class="box-title">🎯 Проверь себя завтра (по базе банк.db)</span>
+    <span class="box-title">🎯 Проверь себя на базе банк.db (без подсказок)</span>
     1. Все вклады продукта «Вклад» с суммой больше 100000, по убыванию суммы.<br>
-    2. Имя клиента и сумма для каждого вклада (JOIN).<br>
+    2. Имя клиента и сумма для каждого вклада (JOIN … ON).<br>
     3. Клиенты из Москвы старше 30.<br>
-    4. Кто из клиентов без вкладов (LEFT JOIN + IS NULL).
+    4. Кто из клиентов без вкладов (LEFT JOIN + IS NULL), с их настоящим id.
   </div>
 
   <div class="nav">
     <a href="03-bpmn-uml.html">← Конспект 3: BPMN и UML</a>
-    <a href="index.html">Оглавление →</a>
+    <a href="05-agregaty.html">Конспект 5: Агрегаты →</a>
   </div>
 
 </article>
